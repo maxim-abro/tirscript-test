@@ -102,8 +102,8 @@ function onDragStop() {
   overflow: hidden;
   width: 200px;
   height: 100px;
-  left:100px;
-  top:100px;
+  left: 100px;
+  top: 100px;
   border: 2px solid #000;
 }
 .cropper-image__controls__view {
@@ -113,7 +113,7 @@ function onDragStop() {
 .cropper-image__controls__view img {
   width: 100%;
   height: 100%;
-  transform: translate(-80px, -100px);
+  transform: translate(-100px, -100px);
   object-fit: contain;
 }
 
