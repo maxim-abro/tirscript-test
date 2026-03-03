@@ -3,14 +3,20 @@
     <img :src="image" alt="" />
     <div class="cropper-image__overlay"></div>
 
-    <div class="cropper-image__controls">
+    <div class="cropper-image__controls" :style="dragStyles">
       <div class="cropper-image__controls__item lt"></div>
       <div class="cropper-image__controls__item lb"></div>
       <div class="cropper-image__controls__item rt"></div>
       <div class="cropper-image__controls__item rb"></div>
       <div class="cropper-image__controls__wrap">
         <div class="cropper-image__controls__view">
-          <img :src="image" alt="" />
+          <img
+            :src="image"
+            alt=""
+            :style="{
+              transform: transformImage,
+            }"
+          />
         </div>
       </div>
     </div>
@@ -40,11 +46,18 @@ const stopDrag = ref<ICoords>({
 
 const cropper = ref<HTMLDivElement>()
 
-const dragStyles = ref({
+const transformImage = computed(() => {
+  if (startDrag.value.x !== null && startDrag.value.y !== null) {
+    `translate(-${startDrag.value.x + 2}px, -${startDrag.value.y + 2}px)`
+  }
+  return null
+})
+
+const dragStyles = computed(() => ({
   transform: `translate(${startDrag.value.x}px, ${startDrag.value.y}px)`,
   width: `${calculateWidthHeight(startDrag.value.x, stopDrag.value.x)}px`,
   height: `${calculateWidthHeight(startDrag.value.y, stopDrag.value.y)}px`,
-})
+}))
 
 function calculateWidthHeight(x1: number | null, x2: number | null) {
   if (x1 !== null && x2 !== null) {
@@ -54,6 +67,7 @@ function calculateWidthHeight(x1: number | null, x2: number | null) {
 }
 
 function onDragStart(event: MouseEvent) {
+  console.log(event)
   startDrag.value.x = event.x
   startDrag.value.y = event.y
   cropper.value?.addEventListener('mousemove', onDragMove)
@@ -102,8 +116,8 @@ function onDragStop() {
   overflow: hidden;
   width: 200px;
   height: 100px;
-  left: 100px;
-  top: 100px;
+  left: 0;
+  top: 0;
   border: 2px solid #000;
 }
 .cropper-image__controls__view {
